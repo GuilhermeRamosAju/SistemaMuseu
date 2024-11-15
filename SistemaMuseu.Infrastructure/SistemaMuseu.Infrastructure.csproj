@@ -11,4 +11,11 @@
     <ProjectReference Include="..\SistemaMuseu.Domain\SistemaMuseu.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Context\" />
+    <Folder Include="EntitiesConfiguration\" />
+    <Folder Include="Migrations\" />
+    <Folder Include="Repositories\" />
+  </ItemGroup>
+
 </Project>
