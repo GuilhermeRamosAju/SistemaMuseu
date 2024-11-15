@@ -4,7 +4,7 @@ using SistemaMuseu.Domain.Entities;
 
 namespace SistemaMuseu.Infrastructure.EntitiesConfiguration;
 
-internal class ArtefatoConfiguration : IEntityTypeConfiguration<Artefato>
+public class ArtefatoConfiguration : IEntityTypeConfiguration<Artefato>
 {
     public void Configure(EntityTypeBuilder<Artefato> builder)
     {

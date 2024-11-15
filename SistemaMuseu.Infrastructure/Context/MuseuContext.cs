@@ -3,26 +3,26 @@ using SistemaMuseu.Domain.Entities;
 
 namespace SistemaMuseu.Infrastructure.Context;
 
-internal class MuseuContext : DbContext
+public class MuseuContext : DbContext
 {
     // Construtor do DbContext
-    protected MuseuContext(DbContextOptions<MuseuContext> options) : base(options) { }
+    public MuseuContext(DbContextOptions<MuseuContext> options) : base(options) { }
 
     // Definindo os DbSets para cada entidade
-    public DbSet<Artefato> Artefatos { get; set; }
-    public DbSet<Funcionario> Funcionarios { get; set; }
-    public DbSet<Exposicao> Exposicoes { get; set; }
-    public DbSet<Doacao> Doacoes { get; set; }
-    public DbSet<Visitante> Visitantes { get; set; }
-    public DbSet<Fornecedor> Fornecedores { get; set; }
-    public DbSet<Compra> Compras { get; set; }
-    public DbSet<Evento> Eventos { get; set; }
-    public DbSet<Secao> Secoes { get; set; }
-    public DbSet<Restauracao> Restauracoes { get; set; }
+    public DbSet<Artefato> Artefato { get; set; }
+    public DbSet<Funcionario> Funcionario { get; set; }
+    public DbSet<Exposicao> Exposicao { get; set; }
+    public DbSet<Doacao> Doacao { get; set; }
+    public DbSet<Visitante> Visitante { get; set; }
+    public DbSet<Fornecedor> Fornecedor { get; set; }
+    public DbSet<Compra> Compra { get; set; }
+    public DbSet<Evento> Evento { get; set; }
+    public DbSet<Secao> Secoe { get; set; }
+    public DbSet<Restauracao> Restauracao { get; set; }
 
     // Tabelas de relacionamento
-    public DbSet<ExposicaoArtefato> ExposicaoArtefatos { get; set; }
-    public DbSet<EventoVisitante> EventoVisitantes { get; set; }
+    public DbSet<ExposicaoArtefato> ExposicaoArtefato { get; set; }
+    public DbSet<EventoVisitante> EventoVisitante { get; set; }
 
     // Configurações adicionais do modelo (se necessário)
     protected override void OnModelCreating(ModelBuilder modelBuilder)

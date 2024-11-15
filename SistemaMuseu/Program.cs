@@ -1,9 +1,18 @@
+using Microsoft.EntityFrameworkCore;
+using SistemaMuseu.Infrastructure;
+using SistemaMuseu.Infrastructure.Context;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Configuração da injeção de dependência
+builder.Services.AddInfrastructure(builder.Configuration);
 
+builder.Services.AddDbContext<MuseuContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+
+// Add services to the container.
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
