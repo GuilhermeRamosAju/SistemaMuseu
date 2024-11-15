@@ -17,7 +17,7 @@ public class MuseuContext : DbContext
     public DbSet<Fornecedor> Fornecedor { get; set; }
     public DbSet<Compra> Compra { get; set; }
     public DbSet<Evento> Evento { get; set; }
-    public DbSet<Secao> Secoe { get; set; }
+    public DbSet<Secao> Secao { get; set; }
     public DbSet<Restauracao> Restauracao { get; set; }
 
     // Tabelas de relacionamento

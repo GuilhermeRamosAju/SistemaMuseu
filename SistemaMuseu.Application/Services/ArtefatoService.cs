@@ -17,33 +17,33 @@ public class ArtefatoService : IArtefatoService
         _mapper = mapper;
     }
 
-    public async Task<ArtefatoDTO> Adicionar(ArtefatoDTO artefatoDTO)
+    public async Task<ArtefatoDTO> AdicionarAsync(ArtefatoDTO artefatoDTO)
     {
         var artefato = _mapper.Map<Artefato>(artefatoDTO);
         var artefatoAdicionado = await _repository.Adicionar(artefato);
         return _mapper.Map<ArtefatoDTO>(artefatoAdicionado);
     }
 
-    public async Task<ArtefatoDTO> Deletar(int id)
+    public async Task<ArtefatoDTO> DeletarAsync(int id)
     {
         var artefatoExcluido = await _repository.Deletar(id);
         return _mapper.Map<ArtefatoDTO>(artefatoExcluido);
     }
 
-    public async Task<ArtefatoDTO> Editar(ArtefatoDTO artefatoDTO)
+    public async Task<ArtefatoDTO> EditarAsync(ArtefatoDTO artefatoDTO)
     {
         var artefato = _mapper.Map<Artefato>(artefatoDTO);
         var artefatoEditado = await _repository.Editar(artefato);
         return _mapper.Map<ArtefatoDTO>(artefatoEditado);
     }
 
-    public async Task<ArtefatoDTO> Obter(int id)
+    public async Task<ArtefatoDTO> ObterPorIdAsync(int id)
     {
         var artefato = await _repository.Obter(id);
         return _mapper.Map<ArtefatoDTO>(artefato);
     }
 
-    public async Task<IEnumerable<ArtefatoDTO>> ObterTodos()
+    public async Task<IEnumerable<ArtefatoDTO>> ObterTodosAsync()
     {
         var artefato = await _repository.ObterTodos();
         return _mapper.Map<IEnumerable<ArtefatoDTO>>(artefato);

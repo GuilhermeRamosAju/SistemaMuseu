@@ -18,7 +18,7 @@ public class ArtefatoController : Controller
     [HttpPost]
     public async Task<ActionResult> Adicionar (ArtefatoDTO artefatoDTO)
     {
-       var artefatoAdicionado =  await _artefatoService.Adicionar (artefatoDTO);
+       var artefatoAdicionado =  await _artefatoService.AdicionarAsync(artefatoDTO);
         if(artefatoAdicionado == null)
         {
             return BadRequest("Ocorreu um erro ao adicionar o artefato");
@@ -31,7 +31,7 @@ public class ArtefatoController : Controller
     [HttpPut]
     public async Task<ActionResult> Editar(ArtefatoDTO artefatoDTO)
     {
-        var artefatoAlterado = await _artefatoService.Editar(artefatoDTO);
+        var artefatoAlterado = await _artefatoService.EditarAsync(artefatoDTO);
         if (artefatoAlterado == null)
         {
             return BadRequest("Ocorreu um erro ao editar o artefato");
@@ -45,7 +45,7 @@ public class ArtefatoController : Controller
     [HttpDelete]
     public async Task<ActionResult> Alterar(int id)
     {
-        var artefatoAlterado = await _artefatoService.Deletar(id);
+        var artefatoAlterado = await _artefatoService.DeletarAsync(id);
         if (artefatoAlterado == null)
         {
             return BadRequest("Ocorreu um erro ao deletar o artefato");
@@ -57,7 +57,7 @@ public class ArtefatoController : Controller
     [HttpGet("{id}")]
     public async Task<ActionResult> Obter(int id)
     {
-        var artefatoObtido = await _artefatoService.Obter(id);
+        var artefatoObtido = await _artefatoService.ObterPorIdAsync(id);
         if (artefatoObtido == null)
         {
             return NotFound("Ocorreu um erro ao obter o artefato");
@@ -69,7 +69,7 @@ public class ArtefatoController : Controller
     [HttpGet]
     public async Task<ActionResult> ObterTodos()
     {
-        var artefatosObtidos = await _artefatoService.ObterTodos();
+        var artefatosObtidos = await _artefatoService.ObterTodosAsync();
         if (artefatosObtidos == null)
         {
             return NotFound("Ocorreu um erro ao obter os artefatos");
