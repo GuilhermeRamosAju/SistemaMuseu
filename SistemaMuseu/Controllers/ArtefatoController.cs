@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using SistemaMuseu.Application.DTOs;
 using SistemaMuseu.Application.Interfaces;
+using SistemaMuseu.Domain.Entities;
 
 namespace SistemaMuseu.API.Controllers;
 
@@ -9,10 +11,12 @@ namespace SistemaMuseu.API.Controllers;
 public class ArtefatoController : Controller
 {
     private readonly IArtefatoService _artefatoService;
+    private readonly IMapper _mapper;
 
-    public ArtefatoController(IArtefatoService artefatoService)
+    public ArtefatoController(IArtefatoService artefatoService, IMapper mapper)
     {
         _artefatoService = artefatoService;
+        _mapper = mapper;
     }
 
     [HttpPost]
@@ -28,18 +32,34 @@ public class ArtefatoController : Controller
         
     }
 
-    [HttpPut]
-    public async Task<ActionResult> Editar(ArtefatoDTO artefatoDTO)
+    [HttpPut("{id}")]
+    public async Task<ActionResult> Editar(int id, [FromBody] ArtefatoDTO artefatoDTO)
     {
-        var artefatoAlterado = await _artefatoService.EditarAsync(artefatoDTO);
+        if (artefatoDTO == null)
+        {
+            return BadRequest("O corpo da requisição não pode ser nulo.");
+        }
+        // Verifica se o artefato com o ID fornecido existe
+        var artefatoObtido = await _artefatoService.ObterPorIdAsync(id);
+        if (artefatoObtido == null)
+        {
+            return NotFound("O artefato com o ID fornecido não foi encontrado.");
+        }
+
+        // Mapeia o DTO para a entidade Artefato e atualiza o ID
+        var artefatoParaEditar = _mapper.Map<Artefato>(artefatoDTO);
+        artefatoParaEditar.Id = id;
+
+        // Chama o serviço para editar o artefato
+        var artefatoAlterado = await _artefatoService.EditarAsync(artefatoParaEditar);
         if (artefatoAlterado == null)
         {
-            return BadRequest("Ocorreu um erro ao editar o artefato");
+            return BadRequest("Ocorreu um erro ao editar o artefato.");
         }
 
         return Ok(artefatoAlterado);
-
     }
+
 
 
     [HttpDelete]

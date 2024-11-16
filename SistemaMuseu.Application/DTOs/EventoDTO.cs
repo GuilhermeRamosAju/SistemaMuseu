@@ -4,8 +4,6 @@ namespace SistemaMuseu.Application.DTOs;
 
 public class EventoDTO
 {
-    public int Id { get; set; }
-
     [Required(ErrorMessage = "O nome do evento é obrigatório.")]
     [StringLength(100, ErrorMessage = "O nome do evento deve ter no máximo 100 caracteres.")]
     public string Nome { get; set; } = string.Empty;

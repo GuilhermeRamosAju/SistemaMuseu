@@ -17,9 +17,8 @@ public class CompraService : ICompraService
         _mapper = mapper;
     }
 
-    public async Task<CompraDTO> AdicionarAsync(CompraDTO compraDTO)
+    public async Task<CompraDTO> AdicionarAsync(Compra compra)
     {
-        var compra = _mapper.Map<Compra>(compraDTO);
         var compraAdicionada = await _repository.Adicionar(compra);
         return _mapper.Map<CompraDTO>(compraAdicionada);
     }
@@ -30,22 +29,22 @@ public class CompraService : ICompraService
         return _mapper.Map<CompraDTO>(compraExcluida);
     }
 
-    public async Task<CompraDTO> EditarAsync(CompraDTO compraDTO)
+    public async Task<CompraDTO> EditarAsync(Compra compraDTO)
     {
         var compra = _mapper.Map<Compra>(compraDTO);
         var compraEditada = await _repository.Editar(compra);
         return _mapper.Map<CompraDTO>(compraEditada);
     }
 
-    public async Task<CompraDTO> ObterPorIdAsync(int id)
+    public async Task<Compra> ObterPorIdAsync(int id)
     {
         var compra = await _repository.Obter(id);
-        return _mapper.Map<CompraDTO>(compra);
+        return compra;
     }
 
-    public async Task<IEnumerable<CompraDTO>> ObterTodosAsync()
+    public async Task<IEnumerable<Compra>> ObterTodosAsync()
     {
         var compras = await _repository.ObterTodos();
-        return _mapper.Map<IEnumerable<CompraDTO>>(compras);
+        return compras;
     }
 }

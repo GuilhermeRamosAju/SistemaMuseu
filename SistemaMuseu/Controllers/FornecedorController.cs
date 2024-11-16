@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using SistemaMuseu.Application.DTOs;
 using SistemaMuseu.Application.Interfaces;
+using SistemaMuseu.Application.Services;
+using SistemaMuseu.Domain.Entities;
 
 namespace SistemaMuseu.API.Controllers;
 
@@ -9,10 +12,12 @@ namespace SistemaMuseu.API.Controllers;
 public class FornecedorController : Controller
 {
     private readonly IFornecedorService _fornecedorService;
+    private readonly IMapper _mapper;
 
-    public FornecedorController(IFornecedorService fornecedorService)
+    public FornecedorController(IFornecedorService fornecedorService, IMapper mapper)
     {
         _fornecedorService = fornecedorService;
+        _mapper = mapper;
     }
 
     [HttpPost]
@@ -27,10 +32,23 @@ public class FornecedorController : Controller
         return Ok(fornecedorAdicionado);
     }
 
-    [HttpPut]
-    public async Task<ActionResult> Editar(FornecedorDTO fornecedorDTO)
+    [HttpPut("{id}")]
+    public async Task<ActionResult> Editar(int id, [FromBody] FornecedorDTO fornecedorDTO)
     {
-        var fornecedorAlterado = await _fornecedorService.EditarAsync(fornecedorDTO);
+        if (fornecedorDTO == null)
+        {
+            return BadRequest("O corpo da requisição não pode ser nulo.");
+        }
+        var fornecedorObtido = await _fornecedorService.ObterPorIdAsync(id);
+        if (fornecedorObtido == null)
+        {
+            return NotFound("O artefato com o ID fornecido não foi encontrado.");
+        }
+
+        var fornecedorParaEditar = _mapper.Map<Fornecedor>(fornecedorDTO);
+        fornecedorParaEditar.Id = id;
+
+        var fornecedorAlterado = await _fornecedorService.EditarAsync(fornecedorParaEditar);
         if (fornecedorAlterado == null)
         {
             return BadRequest("Ocorreu um erro ao editar o fornecedor");

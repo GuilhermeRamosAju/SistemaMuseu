@@ -30,22 +30,21 @@ public class RestauracaoService : IRestauracaoService
         return _mapper.Map<RestauracaoDTO>(restauracaoExcluida);
     }
 
-    public async Task<RestauracaoDTO> EditarAsync(RestauracaoDTO restauracaoDTO)
+    public async Task<RestauracaoDTO> EditarAsync(Restauracao restauracao)
     {
-        var restauracao = _mapper.Map<Restauracao>(restauracaoDTO);
         var restauracaoEditada = await _repository.Editar(restauracao);
         return _mapper.Map<RestauracaoDTO>(restauracaoEditada);
     }
 
-    public async Task<RestauracaoDTO> ObterPorIdAsync(int id)
+    public async Task<Restauracao> ObterPorIdAsync(int id)
     {
         var restauracao = await _repository.Obter(id);
-        return _mapper.Map<RestauracaoDTO>(restauracao);
+        return restauracao;
     }
 
-    public async Task<IEnumerable<RestauracaoDTO>> ObterTodosAsync()
+    public async Task<IEnumerable<Restauracao>> ObterTodosAsync()
     {
         var restauracoes = await _repository.ObterTodos();
-        return _mapper.Map<IEnumerable<RestauracaoDTO>>(restauracoes);
+        return restauracoes;
     }
 }

@@ -4,8 +4,6 @@ namespace SistemaMuseu.Application.DTOs;
 
 public class VisitanteDTO
 {
-    public int Id { get; set; }
-
     [Required(ErrorMessage = "O nome do visitante é obrigatório.")]
     [StringLength(100, ErrorMessage = "O nome do visitante não pode ultrapassar 100 caracteres.")]
     public string Nome { get; set; }

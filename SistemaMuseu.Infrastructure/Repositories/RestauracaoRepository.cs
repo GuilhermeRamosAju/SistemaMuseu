@@ -14,32 +14,42 @@ public class RestauracaoRepository : IRestauracaoRepository
     }
 
     // Adicionar uma nova restauração
-    public async Task<Restauracao> Adicionar(Restauracao restauração)
+    public async Task<Restauracao> Adicionar(Restauracao restauracao)
     {
-        _context.Restauracao.Add(restauração);
+        _context.Restauracao.Add(restauracao);
         await _context.SaveChangesAsync();
-        return restauração;
+        return restauracao;
     }
 
     // Editar uma restauração existente
-    public async Task<Restauracao> Editar(Restauracao restauração)
+    public async Task<Restauracao> Editar(Restauracao restauracao)
     {
-        _context.Restauracao.Update(restauração);
+        var existingEntity = _context.Restauracao.Local.FirstOrDefault(e => e.Id == restauracao.Id);
+
+        if (existingEntity == null)
+        {
+            _context.Restauracao.Update(restauracao);
+        }
+        else
+        {
+            _context.Entry(existingEntity).CurrentValues.SetValues(restauracao);
+        }
+
         await _context.SaveChangesAsync();
-        return restauração;
+        return restauracao;
     }
 
     // Deletar uma restauração pelo ID
     public async Task<Restauracao> Deletar(int id)
     {
-        var restauração = await _context.Restauracao.FindAsync(id);
-        if (restauração == null)
+        var restauracao = await _context.Restauracao.FindAsync(id);
+        if (restauracao == null)
         {
             return null;
         }
-        _context.Restauracao.Remove(restauração);
+        _context.Restauracao.Remove(restauracao);
         await _context.SaveChangesAsync();
-        return restauração;
+        return restauracao;
     }
 
     // Obter uma restauração pelo ID

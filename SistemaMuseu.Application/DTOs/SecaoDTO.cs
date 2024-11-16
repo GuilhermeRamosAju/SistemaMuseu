@@ -4,8 +4,6 @@ namespace SistemaMuseu.Application.DTOs;
 
 public class SecaoDTO
 {
-    public int Id { get; set; }
-
     [StringLength(100, ErrorMessage = "O nome da seção não pode ultrapassar 100 caracteres.")]
     public string? Nome { get; set; }
 

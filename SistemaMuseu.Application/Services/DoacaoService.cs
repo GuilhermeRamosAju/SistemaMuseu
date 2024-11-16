@@ -17,9 +17,8 @@ public class DoacaoService : IDoacaoService
         _mapper = mapper;
     }
 
-    public async Task<DoacaoDTO> AdicionarAsync(DoacaoDTO doacaoDTO)
+    public async Task<DoacaoDTO> AdicionarAsync(Doacao doacao)
     {
-        var doacao = _mapper.Map<Doacao>(doacaoDTO);
         var doacaoAdicionada = await _repository.Adicionar(doacao);
         return _mapper.Map<DoacaoDTO>(doacaoAdicionada);
     }
@@ -30,22 +29,21 @@ public class DoacaoService : IDoacaoService
         return _mapper.Map<DoacaoDTO>(doacaoExcluida);
     }
 
-    public async Task<DoacaoDTO> EditarAsync(DoacaoDTO doacaoDTO)
+    public async Task<DoacaoDTO> EditarAsync(Doacao doacao)
     {
-        var doacao = _mapper.Map<Doacao>(doacaoDTO);
         var doacaoEditada = await _repository.Editar(doacao);
         return _mapper.Map<DoacaoDTO>(doacaoEditada);
     }
 
-    public async Task<DoacaoDTO> ObterPorIdAsync(int id)
+    public async Task<Doacao> ObterPorIdAsync(int id)
     {
         var doacao = await _repository.Obter(id);
-        return _mapper.Map<DoacaoDTO>(doacao);
+        return doacao;
     }
 
-    public async Task<IEnumerable<DoacaoDTO>> ObterTodosAsync()
+    public async Task<IEnumerable<Doacao>> ObterTodosAsync()
     {
         var doacoes = await _repository.ObterTodos();
-        return _mapper.Map<IEnumerable<DoacaoDTO>>(doacoes);
+        return doacoes;
     }
 }

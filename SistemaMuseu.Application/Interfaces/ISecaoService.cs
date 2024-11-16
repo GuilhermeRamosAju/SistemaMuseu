@@ -1,12 +1,13 @@
 ﻿using SistemaMuseu.Application.DTOs;
+using SistemaMuseu.Domain.Entities;
 
 namespace SistemaMuseu.Application.Interfaces;
 
 public interface ISecaoService
 {
     Task<SecaoDTO> AdicionarAsync(SecaoDTO secaoDto);
-    Task<SecaoDTO> EditarAsync(SecaoDTO secaoDto);
+    Task<SecaoDTO> EditarAsync(Secao secaoDto);
     Task<SecaoDTO> DeletarAsync(int id);
-    Task<SecaoDTO> ObterPorIdAsync(int id);
-    Task<IEnumerable<SecaoDTO>> ObterTodosAsync();
+    Task<Secao> ObterPorIdAsync(int id);
+    Task<IEnumerable<Secao>> ObterTodosAsync();
 }

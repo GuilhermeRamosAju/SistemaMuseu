@@ -30,22 +30,21 @@ public class FuncionarioService : IFuncionarioService
         return _mapper.Map<FuncionarioDTO>(funcionarioExcluido);
     }
 
-    public async Task<FuncionarioDTO> EditarAsync(FuncionarioDTO funcionarioDTO)
+    public async Task<FuncionarioDTO> EditarAsync(Funcionario funcionario)
     {
-        var funcionario = _mapper.Map<Funcionario>(funcionarioDTO);
         var funcionarioEditado = await _repository.Editar(funcionario);
         return _mapper.Map<FuncionarioDTO>(funcionarioEditado);
     }
 
-    public async Task<FuncionarioDTO> ObterPorIdAsync(int id)
+    public async Task<Funcionario> ObterPorIdAsync(int id)
     {
         var funcionario = await _repository.Obter(id);
-        return _mapper.Map<FuncionarioDTO>(funcionario);
+        return funcionario;
     }
 
-    public async Task<IEnumerable<FuncionarioDTO>> ObterTodosAsync()
+    public async Task<IEnumerable<Funcionario>> ObterTodosAsync()
     {
         var funcionarios = await _repository.ObterTodos();
-        return _mapper.Map<IEnumerable<FuncionarioDTO>>(funcionarios);
+        return funcionarios;
     }
 }

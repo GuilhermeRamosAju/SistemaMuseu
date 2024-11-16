@@ -7,13 +7,11 @@ public class ExposicaoRepository : IExposicaoRepository
 {
     private readonly MuseuContext _context;
 
-    // Construtor que recebe o DbContext
     public ExposicaoRepository(MuseuContext context)
     {
         _context = context;
     }
 
-    // Adicionar uma nova exposição
     public async Task<Exposicao> Adicionar(Exposicao exposicao)
     {
         _context.Exposicao.Add(exposicao);
@@ -21,15 +19,23 @@ public class ExposicaoRepository : IExposicaoRepository
         return exposicao;
     }
 
-    // Editar uma exposição existente
     public async Task<Exposicao> Editar(Exposicao exposicao)
     {
-        _context.Exposicao.Update(exposicao);
+        var existingEntity = _context.Exposicao.Local.FirstOrDefault(e => e.Id == exposicao.Id);
+
+        if (existingEntity == null)
+        {
+            _context.Exposicao.Update(exposicao);
+        }
+        else
+        {
+            _context.Entry(existingEntity).CurrentValues.SetValues(exposicao);
+        }
+
         await _context.SaveChangesAsync();
         return exposicao;
     }
 
-    // Deletar uma exposição pelo ID
     public async Task<Exposicao> Deletar(int id)
     {
         var exposicao = await _context.Exposicao.FindAsync(id);
@@ -42,13 +48,11 @@ public class ExposicaoRepository : IExposicaoRepository
         return exposicao;
     }
 
-    // Obter uma exposição pelo ID
     public async Task<Exposicao> Obter(int id)
     {
         return await _context.Exposicao.FindAsync(id);
     }
 
-    // Obter todas as exposições
     public async Task<IEnumerable<Exposicao>> ObterTodos()
     {
         return await _context.Exposicao.ToListAsync();

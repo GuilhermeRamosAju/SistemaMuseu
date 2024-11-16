@@ -4,8 +4,6 @@ namespace SistemaMuseu.Application.DTOs;
 
 public class ExposicaoDTO
 {
-    public int Id { get; set; }
-
     [Required(ErrorMessage = "O nome da exposição é obrigatório.")]
     [StringLength(100, ErrorMessage = "O nome da exposição deve ter no máximo 100 caracteres.")]
     public string Nome { get; set; } = string.Empty;

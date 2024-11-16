@@ -4,8 +4,6 @@ namespace SistemaMuseu.Application.DTOs;
 
 public class RestauracaoDTO
 {
-    public int Id { get; set; }
-
     [Required(ErrorMessage = "A data de início é obrigatória.")]
     public DateTime DataInicio { get; set; }
 

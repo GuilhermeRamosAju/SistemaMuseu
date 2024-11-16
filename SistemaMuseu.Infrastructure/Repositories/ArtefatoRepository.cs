@@ -24,8 +24,22 @@ public class ArtefatoRepository : IArtefatoRepository
     // Editar um artefato existente
     public async Task<Artefato> Editar(Artefato artefato)
     {
-        _context.Artefato.Update(artefato); // Atualiza o artefato na tabela
-        await _context.SaveChangesAsync(); // Salva as alterações no banco
+        // Verifica se a entidade Artefato já está sendo rastreada
+        var existingEntity = _context.Artefato.Local.FirstOrDefault(e => e.Id == artefato.Id);
+
+        if (existingEntity == null)
+        {
+            // Se a entidade não estiver rastreada, atualiza o artefato
+            _context.Artefato.Update(artefato);
+        }
+        else
+        {
+            // Se a entidade já estiver sendo rastreada, apenas atualiza os valores
+            _context.Entry(existingEntity).CurrentValues.SetValues(artefato);
+        }
+
+        // Salva as alterações no banco de dados
+        await _context.SaveChangesAsync();
         return artefato; // Retorna o artefato editado
     }
 

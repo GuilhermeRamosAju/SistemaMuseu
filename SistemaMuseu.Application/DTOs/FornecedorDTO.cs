@@ -4,8 +4,6 @@ namespace SistemaMuseu.Application.DTOs;
 
 public class FornecedorDTO
 {
-    public int Id { get; set; }
-
     [Required(ErrorMessage = "O nome do fornecedor é obrigatório.")]
     [StringLength(100, ErrorMessage = "O nome do fornecedor deve ter no máximo 100 caracteres.")]
     public string Nome { get; set; } = string.Empty;

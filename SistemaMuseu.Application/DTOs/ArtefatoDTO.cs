@@ -23,6 +23,7 @@ public class ArtefatoDTO
     [StringLength(100, ErrorMessage = "O campo 'Descrição' deve ter no máximo 100 caracteres.")]
     public string Descricao { get; set; } = string.Empty;
 
+    [DataType(DataType.Date)]
     [Required(ErrorMessage = "O campo 'Data de Aquisição' é obrigatório.")]
     public DateTime DataAquisicao { get; set; }
 

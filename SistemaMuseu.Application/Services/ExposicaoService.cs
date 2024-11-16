@@ -30,22 +30,21 @@ public class ExposicaoService : IExposicaoService
         return _mapper.Map<ExposicaoDTO>(exposicaoExcluida);
     }
 
-    public async Task<ExposicaoDTO> EditarAsync(ExposicaoDTO exposicaoDTO)
+    public async Task<ExposicaoDTO> EditarAsync(Exposicao exposicao)
     {
-        var exposicao = _mapper.Map<Exposicao>(exposicaoDTO);
         var exposicaoEditada = await _repository.Editar(exposicao);
         return _mapper.Map<ExposicaoDTO>(exposicaoEditada);
     }
 
-    public async Task<ExposicaoDTO> ObterPorIdAsync(int id)
+    public async Task<Exposicao> ObterPorIdAsync(int id)
     {
         var exposicao = await _repository.Obter(id);
-        return _mapper.Map<ExposicaoDTO>(exposicao);
+        return exposicao;
     }
 
-    public async Task<IEnumerable<ExposicaoDTO>> ObterTodosAsync()
+    public async Task<IEnumerable<Exposicao>> ObterTodosAsync()
     {
         var exposicoes = await _repository.ObterTodos();
-        return _mapper.Map<IEnumerable<ExposicaoDTO>>(exposicoes);
+        return exposicoes;
     }
 }

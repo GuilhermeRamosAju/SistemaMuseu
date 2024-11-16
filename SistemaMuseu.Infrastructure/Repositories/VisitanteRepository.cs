@@ -24,7 +24,17 @@ public class VisitanteRepository : IVisitanteRepository
     // Editar um visitante existente
     public async Task<Visitante> Editar(Visitante visitante)
     {
-        _context.Visitante.Update(visitante);
+        var existingEntity = _context.Visitante.Local.FirstOrDefault(e => e.Id == visitante.Id);
+
+        if (existingEntity == null)
+        {
+            _context.Visitante.Update(visitante);
+        }
+        else
+        {
+            _context.Entry(existingEntity).CurrentValues.SetValues(visitante);
+        }
+
         await _context.SaveChangesAsync();
         return visitante;
     }

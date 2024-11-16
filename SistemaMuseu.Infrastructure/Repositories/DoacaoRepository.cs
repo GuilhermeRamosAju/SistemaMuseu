@@ -7,13 +7,11 @@ public class DoacaoRepository : IDoacaoRepository
 {
     private readonly MuseuContext _context;
 
-    // Construtor que recebe o DbContext
     public DoacaoRepository(MuseuContext context)
     {
         _context = context;
     }
 
-    // Adicionar uma nova doação
     public async Task<Doacao> Adicionar(Doacao doacao)
     {
         _context.Doacao.Add(doacao);
@@ -21,15 +19,23 @@ public class DoacaoRepository : IDoacaoRepository
         return doacao;
     }
 
-    // Editar uma doação existente
     public async Task<Doacao> Editar(Doacao doacao)
     {
-        _context.Doacao.Update(doacao);
+        var existingEntity = _context.Doacao.Local.FirstOrDefault(d => d.Id == doacao.Id);
+
+        if (existingEntity == null)
+        {
+            _context.Doacao.Update(doacao);
+        }
+        else
+        {
+            _context.Entry(existingEntity).CurrentValues.SetValues(doacao);
+        }
+
         await _context.SaveChangesAsync();
         return doacao;
     }
 
-    // Deletar uma doação pelo ID
     public async Task<Doacao> Deletar(int id)
     {
         var doacao = await _context.Doacao.FindAsync(id);
@@ -42,15 +48,17 @@ public class DoacaoRepository : IDoacaoRepository
         return doacao;
     }
 
-    // Obter uma doação pelo ID
     public async Task<Doacao> Obter(int id)
     {
-        return await _context.Doacao.FindAsync(id);
+        return await _context.Doacao
+            .Include(c => c.Artefato)
+            .FirstAsync(c => c.Id == id);
     }
 
-    // Obter todas as doações
     public async Task<IEnumerable<Doacao>> ObterTodos()
     {
-        return await _context.Doacao.ToListAsync();
+        return await _context.Doacao
+            .Include(c => c.Artefato)
+            .ToListAsync();
     }
 }

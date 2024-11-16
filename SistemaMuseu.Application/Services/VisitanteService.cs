@@ -30,22 +30,21 @@ public class VisitanteService : IVisitanteService
         return _mapper.Map<VisitanteDTO>(visitanteExcluido);
     }
 
-    public async Task<VisitanteDTO> EditarAsync(VisitanteDTO visitanteDTO)
+    public async Task<VisitanteDTO> EditarAsync(Visitante visitante)
     {
-        var visitante = _mapper.Map<Visitante>(visitanteDTO);
         var visitanteEditado = await _repository.Editar(visitante);
         return _mapper.Map<VisitanteDTO>(visitanteEditado);
     }
 
-    public async Task<VisitanteDTO> ObterPorIdAsync(int id)
+    public async Task<Visitante> ObterPorIdAsync(int id)
     {
         var visitante = await _repository.Obter(id);
-        return _mapper.Map<VisitanteDTO>(visitante);
+        return visitante;
     }
 
-    public async Task<IEnumerable<VisitanteDTO>> ObterTodosAsync()
+    public async Task<IEnumerable<Visitante>> ObterTodosAsync()
     {
         var visitantes = await _repository.ObterTodos();
-        return _mapper.Map<IEnumerable<VisitanteDTO>>(visitantes);
+        return visitantes;
     }
 }

@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using SistemaMuseu.Application.DTOs;
 using SistemaMuseu.Application.Interfaces;
+using SistemaMuseu.Domain.Entities;
 
 namespace SistemaMuseu.API.Controllers;
 
@@ -9,10 +11,12 @@ namespace SistemaMuseu.API.Controllers;
 public class VisitanteController : Controller
 {
     private readonly IVisitanteService _visitanteService;
+    private readonly IMapper _mapper;
 
-    public VisitanteController(IVisitanteService visitanteService)
+    public VisitanteController(IVisitanteService visitanteService, IMapper mapper)
     {
         _visitanteService = visitanteService;
+        _mapper = mapper;
     }
 
     [HttpPost]
@@ -27,19 +31,36 @@ public class VisitanteController : Controller
         return Ok(visitanteAdicionado);
     }
 
-    [HttpPut]
-    public async Task<ActionResult> Editar(VisitanteDTO visitanteDTO)
+    [HttpPut("{id}")]
+    public async Task<ActionResult> Editar(int id, [FromBody] VisitanteDTO visitanteDTO)
     {
-        var visitanteAlterado = await _visitanteService.EditarAsync(visitanteDTO);
+        if (visitanteDTO == null)
+        {
+            return BadRequest("O corpo da requisição não pode ser nulo.");
+        }
+
+        // Verifica se o visitante com o ID fornecido existe
+        var visitanteObtido = await _visitanteService.ObterPorIdAsync(id);
+        if (visitanteObtido == null)
+        {
+            return NotFound("O visitante com o ID fornecido não foi encontrado.");
+        }
+
+        // Mapeia o DTO para a entidade Visitante e atualiza o ID
+        var visitanteParaEditar = _mapper.Map<Visitante>(visitanteDTO);
+        visitanteParaEditar.Id = id;
+
+        // Chama o serviço para editar o visitante
+        var visitanteAlterado = await _visitanteService.EditarAsync(visitanteParaEditar);
         if (visitanteAlterado == null)
         {
-            return BadRequest("Ocorreu um erro ao editar o visitante");
+            return BadRequest("Ocorreu um erro ao editar o visitante.");
         }
 
         return Ok(visitanteAlterado);
     }
 
-    [HttpDelete]
+    [HttpDelete("{id}")]
     public async Task<ActionResult> Deletar(int id)
     {
         var visitanteDeletado = await _visitanteService.DeletarAsync(id);
@@ -57,7 +78,7 @@ public class VisitanteController : Controller
         var visitanteObtido = await _visitanteService.ObterPorIdAsync(id);
         if (visitanteObtido == null)
         {
-            return NotFound("Visitante não encontrado");
+            return NotFound("Ocorreu um erro ao obter o visitante");
         }
 
         return Ok(visitanteObtido);
@@ -69,7 +90,7 @@ public class VisitanteController : Controller
         var visitantesObtidos = await _visitanteService.ObterTodosAsync();
         if (visitantesObtidos == null)
         {
-            return NotFound("Não há visitantes disponíveis");
+            return NotFound("Ocorreu um erro ao obter os visitantes");
         }
 
         return Ok(visitantesObtidos);

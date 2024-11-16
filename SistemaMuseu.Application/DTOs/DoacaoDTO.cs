@@ -4,8 +4,6 @@ namespace SistemaMuseu.Application.DTOs;
 
 public class DoacaoDTO
 {
-    public int Id { get; set; }
-
     [Required(ErrorMessage = "O campo Doador é obrigatório.")]
     [StringLength(100, ErrorMessage = "O campo Doador deve ter no máximo 100 caracteres.")]
     public string Doador { get; set; } = string.Empty;
@@ -28,4 +26,6 @@ public class DoacaoDTO
 
     [Required(ErrorMessage = "O campo ArtefatoId é obrigatório.")]
     public int ArtefatoId { get; set; }
+
+    public ArtefatoDTO? Artefato { get; set; }
 }

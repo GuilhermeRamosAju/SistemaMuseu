@@ -30,22 +30,22 @@ public class ArtefatoService : IArtefatoService
         return _mapper.Map<ArtefatoDTO>(artefatoExcluido);
     }
 
-    public async Task<ArtefatoDTO> EditarAsync(ArtefatoDTO artefatoDTO)
+    public async Task<ArtefatoDTO> EditarAsync(Artefato artefato)
     {
-        var artefato = _mapper.Map<Artefato>(artefatoDTO);
         var artefatoEditado = await _repository.Editar(artefato);
         return _mapper.Map<ArtefatoDTO>(artefatoEditado);
     }
 
-    public async Task<ArtefatoDTO> ObterPorIdAsync(int id)
+
+    public async Task<Artefato> ObterPorIdAsync(int id)
     {
         var artefato = await _repository.Obter(id);
-        return _mapper.Map<ArtefatoDTO>(artefato);
+        return (artefato);
     }
 
-    public async Task<IEnumerable<ArtefatoDTO>> ObterTodosAsync()
+    public async Task<IEnumerable<Artefato>> ObterTodosAsync()
     {
         var artefato = await _repository.ObterTodos();
-        return _mapper.Map<IEnumerable<ArtefatoDTO>>(artefato);
+        return artefato;
     }
 }

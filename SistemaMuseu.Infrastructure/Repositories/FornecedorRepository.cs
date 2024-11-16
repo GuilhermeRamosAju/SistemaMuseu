@@ -24,7 +24,20 @@ public class FornecedorRepository : IFornecedorRepository
     // Editar um fornecedor existente
     public async Task<Fornecedor> Editar(Fornecedor fornecedor)
     {
-        _context.Fornecedor.Update(fornecedor);
+        // Verifica se a entidade Artefato já está sendo rastreada
+        var existingEntity = _context.Fornecedor.Local.FirstOrDefault(e => e.Id == fornecedor.Id);
+
+        if (existingEntity == null)
+        {
+            // Se a entidade não estiver rastreada, atualiza o artefato
+            _context.Fornecedor.Update(fornecedor);
+        }
+        else
+        {
+            // Se a entidade já estiver sendo rastreada, apenas atualiza os valores
+            _context.Entry(existingEntity).CurrentValues.SetValues(fornecedor);
+        }
+
         await _context.SaveChangesAsync();
         return fornecedor;
     }

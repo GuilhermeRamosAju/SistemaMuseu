@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using SistemaMuseu.Application.DTOs;
 using SistemaMuseu.Application.Interfaces;
+using SistemaMuseu.Application.Services;
+using SistemaMuseu.Domain.Entities;
 
 namespace SistemaMuseu.API.Controllers;
 
@@ -9,10 +12,12 @@ namespace SistemaMuseu.API.Controllers;
 public class EventoController : Controller
 {
     private readonly IEventoService _eventoService;
+    private readonly IMapper _mapper;
 
-    public EventoController(IEventoService eventoService)
+    public EventoController(IEventoService eventoService, IMapper mapper)
     {
         _eventoService = eventoService;
+        _mapper = mapper;
     }
 
     [HttpPost]
@@ -27,13 +32,30 @@ public class EventoController : Controller
         return Ok(eventoAdicionado);
     }
 
-    [HttpPut]
-    public async Task<ActionResult> Editar(EventoDTO eventoDTO)
+    [HttpPut("{id}")]
+    public async Task<ActionResult> Editar(int id, [FromBody] EventoDTO eventoDTO)
     {
-        var eventoAlterado = await _eventoService.EditarAsync(eventoDTO);
+        if (eventoDTO == null)
+        {
+            return BadRequest("O corpo da requisição não pode ser nulo.");
+        }
+
+        // Verifica se o artefato com o ID fornecido existe
+        var eventoObtido = await _eventoService.ObterPorIdAsync(id);
+        if (eventoObtido == null)
+        {
+            return NotFound("O evento com o ID fornecido não foi encontrado.");
+        }
+
+        // Mapeia o DTO para a entidade Artefato e atualiza o ID
+        var eventoParaEditar = _mapper.Map<Evento>(eventoDTO);
+        eventoParaEditar.Id = id;
+
+        // Chama o serviço para editar o artefato
+        var eventoAlterado = await _eventoService.EditarAsync(eventoParaEditar);
         if (eventoAlterado == null)
         {
-            return BadRequest("Ocorreu um erro ao editar o evento");
+            return BadRequest("Ocorreu um erro ao editar o evento.");
         }
 
         return Ok(eventoAlterado);

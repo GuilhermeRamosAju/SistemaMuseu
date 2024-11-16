@@ -4,17 +4,13 @@ namespace SistemaMuseu.Application.DTOs;
 
 public class CompraDTO
 {
-    public int Id { get; set; }
-
     [Required(ErrorMessage = "O campo FornecedorId é obrigatório.")]
     public int FornecedorId { get; set; }
 
-    [Required(ErrorMessage = "O campo FornecedorNome é obrigatório.")]
-    [StringLength(200, ErrorMessage = "O nome do fornecedor deve ter no máximo 200 caracteres.")]
-    public string FornecedorNome { get; set; } = string.Empty;
-
     [Required(ErrorMessage = "A data da compra é obrigatória.")]
     public DateTime Data { get; set; }
+
+    public FornecedorDTO? Fornecedor { get; set; }
 
     [Required(ErrorMessage = "O valor total é obrigatório.")]
     [Range(0, double.MaxValue, ErrorMessage = "O valor total não pode ser negativo.")]

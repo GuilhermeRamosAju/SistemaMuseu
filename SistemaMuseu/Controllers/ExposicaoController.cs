@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using SistemaMuseu.Application.DTOs;
 using SistemaMuseu.Application.Interfaces;
+using SistemaMuseu.Domain.Entities;
 
 namespace SistemaMuseu.API.Controllers
 {
@@ -9,10 +11,12 @@ namespace SistemaMuseu.API.Controllers
     public class ExposicaoController : Controller
     {
         private readonly IExposicaoService _exposicaoService;
+        private readonly IMapper _mapper;
 
-        public ExposicaoController(IExposicaoService exposicaoService)
+        public ExposicaoController(IExposicaoService exposicaoService, IMapper mapper)
         {
             _exposicaoService = exposicaoService;
+            _mapper = mapper;
         }
 
         [HttpPost]
@@ -27,13 +31,30 @@ namespace SistemaMuseu.API.Controllers
             return Ok(exposicaoAdicionada);
         }
 
-        [HttpPut]
-        public async Task<ActionResult> Editar(ExposicaoDTO exposicaoDTO)
+        [HttpPut("{id}")]
+        public async Task<ActionResult> Editar(int id, [FromBody] ExposicaoDTO exposicaoDTO)
         {
-            var exposicaoAlterada = await _exposicaoService.EditarAsync(exposicaoDTO);
+            if (exposicaoDTO == null)
+            {
+                return BadRequest("O corpo da requisição não pode ser nulo.");
+            }
+
+            // Verifica se o artefato com o ID fornecido existe
+            var exposicaoObtida = await _exposicaoService.ObterPorIdAsync(id);
+            if (exposicaoObtida == null)
+            {
+                return NotFound("A exposição com o ID fornecido não foi encontrado.");
+            }
+
+            // Mapeia o DTO para a entidade Artefato e atualiza o ID
+            var exposicaoParaEditar = _mapper.Map<Exposicao>(exposicaoDTO);
+            exposicaoParaEditar.Id = id;
+
+            // Chama o serviço para editar o artefato
+            var exposicaoAlterada = await _exposicaoService.EditarAsync(exposicaoParaEditar);
             if (exposicaoAlterada == null)
             {
-                return BadRequest("Ocorreu um erro ao editar a exposição");
+                return BadRequest("Ocorreu um erro ao editar a exposição.");
             }
 
             return Ok(exposicaoAlterada);

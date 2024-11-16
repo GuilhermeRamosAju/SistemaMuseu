@@ -30,22 +30,21 @@ public class EventoService : IEventoService
         return _mapper.Map<EventoDTO>(eventoExcluido);
     }
 
-    public async Task<EventoDTO> EditarAsync(EventoDTO eventoDTO)
+    public async Task<EventoDTO> EditarAsync(Evento evento)
     {
-        var evento = _mapper.Map<Evento>(eventoDTO);
         var eventoEditado = await _repository.Editar(evento);
         return _mapper.Map<EventoDTO>(eventoEditado);
     }
 
-    public async Task<EventoDTO> ObterPorIdAsync(int id)
+    public async Task<Evento> ObterPorIdAsync(int id)
     {
         var evento = await _repository.Obter(id);
-        return _mapper.Map<EventoDTO>(evento);
+        return evento;
     }
 
-    public async Task<IEnumerable<EventoDTO>> ObterTodosAsync()
+    public async Task<IEnumerable<Evento>> ObterTodosAsync()
     {
         var eventos = await _repository.ObterTodos();
-        return _mapper.Map<IEnumerable<EventoDTO>>(eventos);
+        return eventos;
     }
 }

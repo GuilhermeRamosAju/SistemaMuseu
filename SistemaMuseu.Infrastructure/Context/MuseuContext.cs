@@ -30,6 +30,11 @@ public class MuseuContext : DbContext
         base.OnModelCreating(modelBuilder);
 
         // Definindo relacionamentos e regras de mapeamento
+        modelBuilder.Entity<Compra>()
+            .HasOne(c => c.Fornecedor)
+            .WithMany()
+            .HasForeignKey(c => c.FornecedorId);
+
         modelBuilder.Entity<ExposicaoArtefato>()
             .HasKey(ea => new { ea.ExposicaoId, ea.ArtefatoId });
 

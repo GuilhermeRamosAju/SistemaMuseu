@@ -30,22 +30,22 @@ public class FornecedorService : IFornecedorService
         return _mapper.Map<FornecedorDTO>(fornecedorExcluido);
     }
 
-    public async Task<FornecedorDTO> EditarAsync(FornecedorDTO fornecedorDTO)
+    public async Task<FornecedorDTO> EditarAsync(Fornecedor fornecedorDTO)
     {
         var fornecedor = _mapper.Map<Fornecedor>(fornecedorDTO);
         var fornecedorEditado = await _repository.Editar(fornecedor);
         return _mapper.Map<FornecedorDTO>(fornecedorEditado);
     }
 
-    public async Task<FornecedorDTO> ObterPorIdAsync(int id)
+    public async Task<Fornecedor> ObterPorIdAsync(int id)
     {
         var fornecedor = await _repository.Obter(id);
-        return _mapper.Map<FornecedorDTO>(fornecedor);
+        return fornecedor;
     }
 
-    public async Task<IEnumerable<FornecedorDTO>> ObterTodosAsync()
+    public async Task<IEnumerable<Fornecedor>> ObterTodosAsync()
     {
         var fornecedores = await _repository.ObterTodos();
-        return _mapper.Map<IEnumerable<FornecedorDTO>>(fornecedores);
+        return fornecedores;
     }
 }

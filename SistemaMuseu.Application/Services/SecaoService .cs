@@ -30,22 +30,21 @@ public class SecaoService : ISecaoService
         return _mapper.Map<SecaoDTO>(secaoExcluida);
     }
 
-    public async Task<SecaoDTO> EditarAsync(SecaoDTO secaoDTO)
+    public async Task<SecaoDTO> EditarAsync(Secao secao)
     {
-        var secao = _mapper.Map<Secao>(secaoDTO);
         var secaoEditada = await _repository.Editar(secao);
         return _mapper.Map<SecaoDTO>(secaoEditada);
     }
 
-    public async Task<SecaoDTO> ObterPorIdAsync(int id)
+    public async Task<Secao> ObterPorIdAsync(int id)
     {
         var secao = await _repository.Obter(id);
-        return _mapper.Map<SecaoDTO>(secao);
+        return secao;
     }
 
-    public async Task<IEnumerable<SecaoDTO>> ObterTodosAsync()
+    public async Task<IEnumerable<Secao>> ObterTodosAsync()
     {
         var secoes = await _repository.ObterTodos();
-        return _mapper.Map<IEnumerable<SecaoDTO>>(secoes);
+        return secoes;
     }
 }

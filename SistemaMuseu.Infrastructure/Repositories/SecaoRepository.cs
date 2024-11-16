@@ -24,7 +24,17 @@ public class SecaoRepository : ISecaoRepository
     // Editar uma seção existente
     public async Task<Secao> Editar(Secao secao)
     {
-        _context.Secao.Update(secao);
+        var existingEntity = _context.Secao.Local.FirstOrDefault(e => e.Id == secao.Id);
+
+        if (existingEntity == null)
+        {
+            _context.Secao.Update(secao);
+        }
+        else
+        {
+            _context.Entry(existingEntity).CurrentValues.SetValues(secao);
+        }
+
         await _context.SaveChangesAsync();
         return secao;
     }
