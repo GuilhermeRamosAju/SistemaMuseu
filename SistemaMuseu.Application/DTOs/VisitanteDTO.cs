@@ -10,7 +10,7 @@ public class VisitanteDTO
     [StringLength(100, ErrorMessage = "O nome do visitante não pode ultrapassar 100 caracteres.")]
     public string Nome { get; set; }
 
-    [Range(0, int.MaxValue, ErrorMessage = "A idade deve ser um valor positivo.")]
+    [Range(0, 130, ErrorMessage = "A idade deve ser um valor positivo.")]
     public int? Idade { get; set; }
 
     [EmailAddress(ErrorMessage = "O e-mail fornecido não é válido.")]
