@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SistemaMuseu.Application.DTOs;
 using SistemaMuseu.Application.Interfaces;
+using SistemaMuseu.Application.Services;
 using SistemaMuseu.Domain.Entities;
 
 namespace SistemaMuseu.API.Controllers;
@@ -11,18 +12,34 @@ namespace SistemaMuseu.API.Controllers;
 public class SecaoController : Controller
 {
     private readonly ISecaoService _secaoService;
+    private readonly IFuncionarioService _funcionarioService;
     private readonly IMapper _mapper;
 
-    public SecaoController(ISecaoService secaoService, IMapper mapper)
+    public SecaoController(ISecaoService secaoService, IFuncionarioService funcionarioService, IMapper mapper)
     {
         _secaoService = secaoService;
+        _funcionarioService = funcionarioService;
         _mapper = mapper;
     }
 
     [HttpPost]
     public async Task<ActionResult> Adicionar(SecaoDTO secaoDTO)
     {
-        var secaoAdicionada = await _secaoService.AdicionarAsync(secaoDTO);
+        // Verifique se o funcionário existe
+        var funcionarioExiste = await _funcionarioService.ObterPorIdAsync(secaoDTO.ResponsavelId);
+
+        if (funcionarioExiste == null)
+        {
+            return BadRequest("O funcionário informado não existe na base de dados");
+        }
+
+        // Mapeie o DTO para a entidade Exposicao
+        var exposicao = _mapper.Map<Secao>(secaoDTO);
+
+        // Associe o artefato à exposição
+        exposicao.Responsavel = funcionarioExiste;
+
+        var secaoAdicionada = await _secaoService.AdicionarAsync(exposicao);
         if (secaoAdicionada == null)
         {
             return BadRequest("Ocorreu um erro ao adicionar a seção");

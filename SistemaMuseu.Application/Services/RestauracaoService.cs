@@ -17,9 +17,8 @@ public class RestauracaoService : IRestauracaoService
         _mapper = mapper;
     }
 
-    public async Task<RestauracaoDTO> AdicionarAsync(RestauracaoDTO restauracaoDTO)
+    public async Task<RestauracaoDTO> AdicionarAsync(Restauracao restauracao)
     {
-        var restauracao = _mapper.Map<Restauracao>(restauracaoDTO);
         var restauracaoAdicionada = await _repository.Adicionar(restauracao);
         return _mapper.Map<RestauracaoDTO>(restauracaoAdicionada);
     }

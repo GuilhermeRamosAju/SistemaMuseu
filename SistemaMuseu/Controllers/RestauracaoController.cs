@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SistemaMuseu.Application.DTOs;
 using SistemaMuseu.Application.Interfaces;
+using SistemaMuseu.Application.Services;
 using SistemaMuseu.Domain.Entities;
 
 namespace SistemaMuseu.API.Controllers;
@@ -11,18 +12,33 @@ namespace SistemaMuseu.API.Controllers;
 public class RestauracaoController : Controller
 {
     private readonly IRestauracaoService _restauracaoService;
+    private readonly IArtefatoService _artefatoService;
     private readonly IMapper _mapper;
 
-    public RestauracaoController(IRestauracaoService restauracaoService, IMapper mapper)
+    public RestauracaoController(IRestauracaoService restauracaoService, IArtefatoService artefatoService, IMapper mapper)
     {
         _restauracaoService = restauracaoService;
+        _artefatoService = artefatoService;
         _mapper = mapper;
     }
 
     [HttpPost]
     public async Task<ActionResult> Adicionar(RestauracaoDTO restauracaoDTO)
     {
-        var restauracaoAdicionada = await _restauracaoService.AdicionarAsync(restauracaoDTO);
+        // Verifique se o artefato existe
+        var artefatoExiste = await _artefatoService.ObterPorIdAsync(restauracaoDTO.ArtefatoId);
+
+        if (artefatoExiste == null)
+        {
+            return BadRequest("O artefato informado não existe na base de dados");
+        }
+
+        var restauracao = _mapper.Map<Restauracao>(restauracaoDTO);
+
+        // Associe o artefato à restauração
+        restauracao.Artefato = artefatoExiste;
+
+        var restauracaoAdicionada = await _restauracaoService.AdicionarAsync(restauracao);
         if (restauracaoAdicionada == null)
         {
             return BadRequest("Ocorreu um erro ao adicionar a restauração");

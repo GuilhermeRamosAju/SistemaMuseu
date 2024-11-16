@@ -40,18 +40,18 @@ public class EventoController : Controller
             return BadRequest("O corpo da requisição não pode ser nulo.");
         }
 
-        // Verifica se o artefato com o ID fornecido existe
+        // Verifica se o evento com o ID fornecido existe
         var eventoObtido = await _eventoService.ObterPorIdAsync(id);
         if (eventoObtido == null)
         {
             return NotFound("O evento com o ID fornecido não foi encontrado.");
         }
 
-        // Mapeia o DTO para a entidade Artefato e atualiza o ID
+        // Mapeia o DTO para a entidade Evento e atualiza o ID
         var eventoParaEditar = _mapper.Map<Evento>(eventoDTO);
         eventoParaEditar.Id = id;
 
-        // Chama o serviço para editar o artefato
+        // Chama o serviço para editar o evento
         var eventoAlterado = await _eventoService.EditarAsync(eventoParaEditar);
         if (eventoAlterado == null)
         {

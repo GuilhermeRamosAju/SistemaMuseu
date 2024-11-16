@@ -50,11 +50,15 @@ public class ExposicaoRepository : IExposicaoRepository
 
     public async Task<Exposicao> Obter(int id)
     {
-        return await _context.Exposicao.FindAsync(id);
+        return await _context.Exposicao
+            .Include(c => c.Responsavel)
+            .FirstAsync(c => c.Id == id);
     }
 
     public async Task<IEnumerable<Exposicao>> ObterTodos()
     {
-        return await _context.Exposicao.ToListAsync();
+        return await _context.Exposicao
+            .Include(c => c.Responsavel)
+            .ToListAsync();
     }
 }

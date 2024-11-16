@@ -6,8 +6,8 @@ public class Secao
     public string Nome { get; set; } = string.Empty;
     public string Tema { get; set; } = string.Empty;
     public string Descricao { get; set; } = string.Empty;
-    public int Responsavel { get; set; }
-    public Funcionario ResponsavelFuncionario { get; set; } = new Funcionario();
+    public int ResponsavelId { get; set; }
+    public Funcionario Responsavel { get; set; } = new Funcionario();
     public int Capacidade { get; set; }
     public decimal Temperatura { get; set; }
     public decimal Umidade { get; set; }

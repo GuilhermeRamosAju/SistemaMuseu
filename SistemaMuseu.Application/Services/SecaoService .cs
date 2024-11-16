@@ -17,9 +17,8 @@ public class SecaoService : ISecaoService
         _mapper = mapper;
     }
 
-    public async Task<SecaoDTO> AdicionarAsync(SecaoDTO secaoDTO)
+    public async Task<SecaoDTO> AdicionarAsync(Secao secao)
     {
-        var secao = _mapper.Map<Secao>(secaoDTO);
         var secaoAdicionada = await _repository.Adicionar(secao);
         return _mapper.Map<SecaoDTO>(secaoAdicionada);
     }

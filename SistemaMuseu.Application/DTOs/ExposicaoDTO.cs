@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace SistemaMuseu.Application.DTOs;
 
@@ -30,4 +31,7 @@ public class ExposicaoDTO
     public decimal CustoTotal { get; set; }
 
     public int ResponsavelId { get; set; }
+
+    [JsonIgnore]
+    public FuncionarioDTO? Responsavel { get; set; }
 }

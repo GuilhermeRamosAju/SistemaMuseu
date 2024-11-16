@@ -55,12 +55,16 @@ public class SecaoRepository : ISecaoRepository
     // Obter uma seção pelo ID
     public async Task<Secao> Obter(int id)
     {
-        return await _context.Secao.FindAsync(id);
+        return await _context.Secao
+            .Include(c => c.Responsavel)
+            .FirstAsync(c => c.Id == id);
     }
 
     // Obter todas as seções
     public async Task<IEnumerable<Secao>> ObterTodos()
     {
-        return await _context.Secao.ToListAsync();
+        return await _context.Secao
+            .Include(c => c.Responsavel)
+            .ToListAsync();
     }
 }

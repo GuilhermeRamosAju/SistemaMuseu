@@ -11,18 +11,35 @@ namespace SistemaMuseu.API.Controllers
     public class ExposicaoController : Controller
     {
         private readonly IExposicaoService _exposicaoService;
+        private readonly IFuncionarioService _funcionarioService;
         private readonly IMapper _mapper;
 
-        public ExposicaoController(IExposicaoService exposicaoService, IMapper mapper)
+        public ExposicaoController(IExposicaoService exposicaoService, IFuncionarioService funcionarioService, IMapper mapper)
         {
             _exposicaoService = exposicaoService;
+            _funcionarioService = funcionarioService;
             _mapper = mapper;
         }
 
         [HttpPost]
         public async Task<ActionResult> Adicionar(ExposicaoDTO exposicaoDTO)
         {
-            var exposicaoAdicionada = await _exposicaoService.AdicionarAsync(exposicaoDTO);
+            // Verifique se o funcionário existe
+            var funcionarioExiste = await _funcionarioService.ObterPorIdAsync(exposicaoDTO.ResponsavelId);
+
+            if (funcionarioExiste == null)
+            {
+                return BadRequest("O funcionário informado não existe na base de dados");
+            }
+
+            // Mapeie o DTO para a entidade Exposicao
+            var exposicao = _mapper.Map<Exposicao>(exposicaoDTO);
+
+            // Associe o artefato à exposição
+            exposicao.Responsavel = funcionarioExiste;
+
+            // Adiciona a exposição
+            var exposicaoAdicionada = await _exposicaoService.AdicionarAsync(exposicao);
             if (exposicaoAdicionada == null)
             {
                 return BadRequest("Ocorreu um erro ao adicionar a exposição");

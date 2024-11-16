@@ -17,9 +17,8 @@ public class ExposicaoService : IExposicaoService
         _mapper = mapper;
     }
 
-    public async Task<ExposicaoDTO> AdicionarAsync(ExposicaoDTO exposicaoDTO)
+    public async Task<ExposicaoDTO> AdicionarAsync(Exposicao exposicao)
     {
-        var exposicao = _mapper.Map<Exposicao>(exposicaoDTO);
         var exposicaoAdicionada = await _repository.Adicionar(exposicao);
         return _mapper.Map<ExposicaoDTO>(exposicaoAdicionada);
     }

@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace SistemaMuseu.Application.DTOs;
 
@@ -26,4 +27,7 @@ public class RestauracaoDTO
 
     [Required(ErrorMessage = "O Artefato associado é obrigatório.")]
     public int ArtefatoId { get; set; }
+
+    [JsonIgnore]
+    public ArtefatoDTO? Artefato { get; set; }
 }

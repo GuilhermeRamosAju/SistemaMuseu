@@ -55,12 +55,16 @@ public class RestauracaoRepository : IRestauracaoRepository
     // Obter uma restauração pelo ID
     public async Task<Restauracao> Obter(int id)
     {
-        return await _context.Restauracao.FindAsync(id);
+        return await _context.Restauracao
+            .Include(c => c.Artefato)
+            .FirstAsync(c => c.Id == id);
     }
 
     // Obter todas as restaurações
     public async Task<IEnumerable<Restauracao>> ObterTodos()
     {
-        return await _context.Restauracao.ToListAsync();
+        return await _context.Restauracao
+            .Include(c => c.Artefato)
+            .ToListAsync();
     }
 }

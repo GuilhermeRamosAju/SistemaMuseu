@@ -5,7 +5,7 @@ namespace SistemaMuseu.Application.Interfaces;
 
 public interface IRestauracaoService
 {
-    Task<RestauracaoDTO> AdicionarAsync(RestauracaoDTO restauracaoDto);
+    Task<RestauracaoDTO> AdicionarAsync(Restauracao restauracaoDto);
     Task<RestauracaoDTO> EditarAsync(Restauracao restauracaoDto);
     Task<RestauracaoDTO> DeletarAsync(int id);
     Task<Restauracao> ObterPorIdAsync(int id);

@@ -5,7 +5,7 @@ namespace SistemaMuseu.Application.Interfaces;
 
 public interface ISecaoService
 {
-    Task<SecaoDTO> AdicionarAsync(SecaoDTO secaoDto);
+    Task<SecaoDTO> AdicionarAsync(Secao secaoDto);
     Task<SecaoDTO> EditarAsync(Secao secaoDto);
     Task<SecaoDTO> DeletarAsync(int id);
     Task<Secao> ObterPorIdAsync(int id);

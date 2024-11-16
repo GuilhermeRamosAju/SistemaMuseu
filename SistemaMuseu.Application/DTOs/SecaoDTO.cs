@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace SistemaMuseu.Application.DTOs;
 
@@ -26,5 +27,8 @@ public class SecaoDTO
     public int? NivelSeguranca { get; set; }
 
     [Required(ErrorMessage = "O ID do funcionário responsável é obrigatório.")]
-    public int? ResponsavelId { get; set; }
+    public int ResponsavelId { get; set; }
+
+    [JsonIgnore]
+    public FuncionarioDTO? Responsavel { get; set; }
 }

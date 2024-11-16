@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace SistemaMuseu.Application.DTOs;
 
@@ -27,5 +28,6 @@ public class DoacaoDTO
     [Required(ErrorMessage = "O campo ArtefatoId é obrigatório.")]
     public int ArtefatoId { get; set; }
 
+    [JsonIgnore]
     public ArtefatoDTO? Artefato { get; set; }
 }
